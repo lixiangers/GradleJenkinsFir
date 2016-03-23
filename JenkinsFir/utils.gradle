@@ -1,0 +1,53 @@
+/**
+ * 从版本文本中读取升级信息(读取最上面的信息)
+ * @return
+ */
+def String getUpgradeLog() {
+    File propFile = file("Version");
+    BufferedReader reader = null;
+    StringBuffer result = new StringBuffer();
+    try {
+        reader = new BufferedReader(new FileReader(propFile));
+        String tempString = null;
+        // 一次读入一行，直到读入null为文件结束
+        while ((tempString = reader.readLine()) != null) {
+            // 显示行号
+            if (tempString == null || tempString == "" || tempString.startsWith("==="))
+                break;
+            if (tempString.startsWith("Version:"))
+                continue;
+
+            result.append(tempString + "\n");
+        }
+        reader.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        if (reader != null) {
+            try {
+                reader.close();
+            } catch (IOException e1) {
+            }
+        }
+    }
+
+    return result.toString();
+}
+
+def getFirTokenAndFirLog() {
+    if (!project.properties.containsKey("FirToken")) {
+        println "FirToken is required"
+    } else {
+        fir.apiToken = FirToken
+    }
+
+    fir.changeLog = getUpgradeLog();
+    println "apiToken:" + fir.apiToken
+    println "changeLog:" + fir.changeLog
+}
+
+ext { //此段花括号中代码是闭包
+    //ext{}不是ext(Closure)对应的函数调用。但是ext{}中的{}确实是闭包。
+    //这里我们定一个project property
+    getFirTokenAndFirLog = this.&getFirTokenAndFirLog
+}

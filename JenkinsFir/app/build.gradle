@@ -1,4 +1,38 @@
 apply plugin: 'com.android.application'
+apply plugin: 'im.fir.plugin.gradle'
+apply from: rootProject.getRootDir().getAbsolutePath() + "/utils.gradle"
+
+/**
+ * fir 里面的参数现在是在运行Fir publish task 的时候通过-P 传入FirToken FirLog 动态指定
+ * 其实这个Fir 的闭包完全可以不要。这里为了说明Fir需要用到的参数
+ */
+fir {
+    //必填 上传 fir.im apk 字段，否则无法上传 APP 到 fir.im
+//    apiToken FirToken  在运行fir相应的task再指定
+    //可选 上传fir.im 中显示的changelog
+//    changeLog FirLog   在运行fir相应的task再指定
+}
+
+/**
+ 我们在gradle解析完整个任务之后，找到对应的Task，然后在里边添加一个doFirst Action
+ 这样能确保编译开始的时候，我们动态设置Fir的参数。
+ 注意，必须在afterEvaluate里边才能做，否则gradle没有建立完任务有向图，你是找不到
+ 什么preDebugBuild之类的任务的
+ */
+project.afterEvaluate {
+    tasks.getByName("publishApkBetaRelease") {
+        it.doFirst {
+            getFirTokenAndFirLog()
+        }
+    }
+
+    tasks.getByName("publishApkOnlineRelease") {
+        it.doFirst {
+            getFirTokenAndFirLog()
+        }
+    }
+}
+
 
 android {
     compileSdkVersion 23
@@ -7,7 +41,7 @@ android {
     defaultConfig {
         applicationId "com.lixiangers.jenkinsfir"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -15,6 +49,20 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        Dev {
+            buildConfigField "String", "URL_DOMAIN", "http:\\www.dev.com"
+        }
+
+        Beta {
+            buildConfigField "String", "URL_DOMAIN", "http:\\www.beta.com"
+        }
+
+        Online {
+            buildConfigField "String", "URL_DOMAIN", "http:\\www.online.com"
         }
     }
 }
