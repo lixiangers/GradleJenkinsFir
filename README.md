@@ -1,0 +1,2 @@
+# GradleJenkinsFir
+Gradle项目基于Fir插件部署到jenkins,实现push代码后自动根据环境打包上传到Fir上
