@@ -46,7 +46,7 @@ packName会影响我们的第三方SDK的申请)，直接申请两个Fir帐号�
 * #### Jenkins安装
 省略
 * #### Git 设置
-    * 设置Dev、Beta、Online三个branch（发布Beta版本的时候切换到Beat并merge Dev然后Push 到远程的Beta分支，
+    * 设置Dev、Beta、Online三个branch（Dev用于开发,发布Beta版本的时候切换到Beat并merge Dev然后Push 到远程的Beta分支，
     发布Online版本的时候切换到Online并merge Dev然后Push 到远程的Online分支，）
     * 在Git服务器上中的pre-receive hooks 中设置 http://jenkinsurl/git/notifyCommit?url=<URL of the Git repository>
     让提交代码后就通知Jenkins有代码更新 [参考](https://zoakerc.com/archives/jenkins-series-trigger-build-through-git-hooks/)
