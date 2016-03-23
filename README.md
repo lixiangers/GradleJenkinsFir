@@ -10,9 +10,11 @@
 * Fir发布时更新日志从本地的日志更新记录中读取
 
 ### 实现步骤
+
 * #### Fir准备
 我们要发布Beta和Online两个包到Fir，但是我们这里的packName一样(Gradle可以不同的Flavors设置不同的packName，但是实际项目中不同的
 packName会影响我们的第三方SDK的申请)，直接申请两个Fir帐号。
+
 * #### Gradle配置
     * 添加Fir插件 详情参考:[使用 Gradle Plugin 发布应用到 fir.im](http://blog.fir.im/gradle/)
     * 新建一个util.gradle，在里面添加方法`getFirTokenAndFirLog()`,从更新日志记录的Verion文件中获取最新的更新日志(每次升级都
