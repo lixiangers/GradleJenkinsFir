@@ -56,13 +56,13 @@ packName会影响我们的第三方SDK的申请)，直接申请两个Fir帐号�
     * 在Jenkins 的系统管理--系统设置 安装JDK 和 Gradle(最好和本地的版本一致)
     * 新建两个Project（BetaProject，OnlineProject）
         * 源码管理
-        ![源码管理](1.png)
+        ![源码管理](JenkinsFir/resource/1.png)
         设置好Git仓库和认证，以及对应的branch(BetaProject 对应Beta，OnlineProject 对应 Online)。
         * 构建触发器
-        ![构建触发器](2.png)
+        ![构建触发器](JenkinsFir/resource/2.png)
         选择Poll SCM
         * 构建配置
-        ![构建配置](3.png)
+        ![构建配置](JenkinsFir/resource/3.png)
             * Invoke Gradle Verison 选择安装的Gradle的版本
             * Build File 选择app下的build.gradle
             * Tasks 填写 clean publishApkBetaRelease -PFirToken="Beta/Online fir帐号对应token"
